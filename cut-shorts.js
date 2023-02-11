@@ -1,31 +1,32 @@
-/**
- * DOM:
- *  ytd-grid-video-renderer -> div#dismissible -> ytd-thumbnail -> a:href
- *
- * href:
- *  short: https://www.youtube.com/shorts/oAGpauAhvwo
- *  normal: https://www.youtube.com/watch?v=JJXZeSJzgOg
- */
+// do once
+removeShorts(document.querySelectorAll("ytd-grid-video-renderer"));
 
-// videos container DOM
+// get videos container DOM
 const container = document.querySelector(
   "ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents"
 );
 
+// new observer
 let observer = new MutationObserver((mutations) => {
-  console.log("[cut-shorts] observered");
+  console.log("[noshorts] container changed");
   const vdoms = document.querySelectorAll("ytd-grid-video-renderer");
-  for (const v of vdoms) {
-    if (isShort(v)) {
-      console.log("[cut-shorts] removed");
-      v.remove();
-    }
-  }
+  removeShorts(vdoms);
 });
 
+// listen container DOM change
 observer.observe(container, {
   childList: true,
 });
+
+// remove shorts video
+function removeShorts(vdom) {
+  for (const v of vdom) {
+    if (isShort(v)) {
+      console.log("[noshorts] short removed");
+      v.remove();
+    }
+  }
+}
 
 // report whether the video is shorts
 function isShort(vdom) {
