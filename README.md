@@ -8,6 +8,7 @@ DOM Tree:
 
 - ytd-two-column-browse-results-renderer
 - ytd-section-list-renderer
+- ytd-grid-renderer
 - ytd-grid-video-renderer
 - div#dismissible
 - ytd-thumbnail
@@ -15,5 +16,5 @@ DOM Tree:
 
 Href:
 
-- Shorts: https://www.youtube.com/shorts/*
-- Normal: https://www.youtube.com/watch?v=*
+- Shorts: https://www.youtube.com/shorts/:id
+- Normal: https://www.youtube.com/watch?v=:id
