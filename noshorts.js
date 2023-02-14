@@ -55,7 +55,7 @@ function showTabs() {
         line-height: 32px;
         cursor: pointer;
         float: left;
-        padding: 0 15px;
+        padding: 0 12px;
         border: none;
         border-radius: 8px;
         margin: 12px;
@@ -70,11 +70,11 @@ function showTabs() {
       .noshorts-noactive {
         background-color: rgba(0, 0, 0, 0.05);
         color: #0f0f0f;
-        transition: background-color 0.3s;
-        -webkit-transition: background-color 0.3s;
       }
       .noshorts-noactive:hover {
         background-color: rgba(0, 0, 0, 0.1);
+        transition: background-color 0.5s cubic-bezier(0.05,0,0,1);
+        -webkit-transition: background-color 0.5s cubic-bezier(0.05,0,0,1);
       }
       </style>
       <div id="noshorts-tabs">
