@@ -1,6 +1,7 @@
 // do once
 showTabs();
 removeShorts(document.querySelectorAll("ytd-grid-video-renderer"));
+initTabEvent();
 
 // get videos container DOM
 const container = document.querySelector(
@@ -36,6 +37,31 @@ function isShort(vdom) {
   return href.startsWith("https://www.youtube.com/shorts");
 }
 
+// 初始化 Tabs 点击事件
+function initTabEvent() {
+  const doms = document.querySelectorAll(".noshorts-tab");
+  for (const v of doms) {
+    v.addEventListener("click", tabEventHandler);
+  }
+}
+
+// Tab 点击事件处理函数
+function tabEventHandler(event) {
+  const dom = event.target;
+  if (dom.classList.contains("noshorts-active")) {
+    return;
+  }
+  const doms = document.querySelectorAll(".noshorts-tab");
+  for (const item of doms) {
+    if (item.classList.contains("noshorts-active")) {
+      item.classList.replace("noshorts-active", "noshorts-noactive");
+    }
+    if (dom.innerHTML === item.innerHTML) {
+      item.classList.replace("noshorts-noactive", "noshorts-active");
+    }
+  }
+}
+
 // 显示 Tabs 栏
 function showTabs() {
   const headerDOM = document.querySelector(
@@ -63,7 +89,7 @@ function showTabs() {
         letter-spacing: 0.2px;
         font-family: Roboto, Arial, sans-serif;
       }
-      .noshorts-acitve {
+      .noshorts-active {
         background-color: #0f0f0f;
         color: #fff;
       }
@@ -78,7 +104,7 @@ function showTabs() {
       }
       </style>
       <div id="noshorts-tabs">
-        <a class="noshorts-tab noshorts-acitve">All</a>
+        <a class="noshorts-tab noshorts-active">All</a>
         <a class="noshorts-tab noshorts-noactive">Video</a>
         <a class="noshorts-tab noshorts-noactive">Shorts</a>
         <a class="noshorts-tab noshorts-noactive">Live</a>
