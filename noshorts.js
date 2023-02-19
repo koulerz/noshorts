@@ -1,43 +1,153 @@
-// do once
-showTabs();
-removeShorts(document.querySelectorAll("ytd-grid-video-renderer"));
-initTabEvent();
+const containerDOM = getDOMContainer();
 
-// get videos container DOM
-const container = document.querySelector(
-  "ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents"
-);
+// init tabs
+showTabs();
+initTabEvent();
 
 // new observer
 let observer = new MutationObserver((mutations) => {
   console.log("[noshorts] container changed");
-  const vdoms = document.querySelectorAll("ytd-grid-video-renderer");
-  removeShorts(vdoms);
+  const activedTab = getDOMActivedTab();
+  reRender(activedTab);
 });
 
 // listen container DOM change
-observer.observe(container, {
+observer.observe(containerDOM, {
   childList: true,
 });
 
-// remove shorts video
-function removeShorts(vdom) {
-  for (const v of vdom) {
-    if (isShort(v)) {
-      console.log("[noshorts] short removed");
-      v.remove();
+// get container of all content
+function getDOMContainer() {
+  return document.querySelector(
+    "ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents"
+  );
+}
+
+// get video list of all
+function getDOMAllVideos(containerDOM) {
+  return containerDOM.querySelectorAll("ytd-grid-video-renderer");
+}
+
+// get section list of container
+function getDOMSectionList(containerDOM) {
+  return containerDOM.querySelectorAll("ytd-item-section-renderer");
+}
+
+// get video list of section
+function getDOMVideoListOfSection(sectionDOM) {
+  return sectionDOM.querySelectorAll("ytd-grid-video-renderer");
+}
+
+// get actived tab
+function getDOMActivedTab() {
+  const tabs = document.querySelectorAll(".noshorts-tab");
+  for (const dom of tabs) {
+    if (dom.classList.contains("noshorts-active")) {
+      return dom;
     }
   }
 }
 
+// show video
+function showVideo(videoDOM) {
+  if (!videoDOM.getAttribute("style")) {
+    return;
+  }
+  videoDOM.removeAttribute("style");
+}
+
+// hidden video
+function hiddenVideo(videoDOM) {
+  if (videoDOM.getAttribute("style")) {
+    return;
+  }
+  videoDOM.setAttribute("style", "display: none;");
+}
+
 // report whether the video is shorts
-function isShort(vdom) {
-  const a = vdom.querySelector("a");
+function isShort(videoDOM) {
+  const a = videoDOM.querySelector("a");
   const href = a.href;
   return href.startsWith("https://www.youtube.com/shorts");
 }
 
-// 初始化 Tabs 点击事件
+// report whether the video is live
+function isLive(videoDOM) {
+  const label = videoDOM.querySelector(
+    "#text-metadata>ytd-badge-supported-renderer>div.badge>span"
+  );
+  if (label === null) {
+    return false;
+  }
+  return label.innerHTML === "LIVE";
+}
+
+// show all videos
+function showAll() {
+  const allVideosDOM = getDOMAllVideos(containerDOM);
+  for (const v of allVideosDOM) {
+    showVideo(v);
+  }
+}
+
+// show videos only
+function showVideosOnly() {
+  const allVideosDOM = getDOMAllVideos(containerDOM);
+  for (const v of allVideosDOM) {
+    if (isShort(v) || isLive(v)) {
+      hiddenVideo(v);
+    } else {
+      showVideo(v);
+    }
+  }
+}
+
+// show shorts only
+function showShortsOnly() {
+  const allVideosDOM = getDOMAllVideos(containerDOM);
+  for (const v of allVideosDOM) {
+    if (isShort(v)) {
+      showVideo(v);
+    } else {
+      hiddenVideo(v);
+    }
+  }
+}
+
+// show lives only
+function showLivesOnly() {
+  const allVideosDOM = getDOMAllVideos(containerDOM);
+  for (const v of allVideosDOM) {
+    if (isLive(v)) {
+      showVideo(v);
+    } else {
+      hiddenVideo(v);
+    }
+  }
+}
+
+// rerender
+function reRender(activedTabDOM) {
+  const text = activedTabDOM.innerHTML;
+  switch (text) {
+    case "All":
+      showAll();
+      break;
+    case "Video":
+      showVideosOnly();
+      break;
+    case "Shorts":
+      showShortsOnly();
+      break;
+    case "Live":
+      showLivesOnly();
+      break;
+    default:
+      showAll();
+  }
+}
+
+// init Tabs click event
 function initTabEvent() {
   const doms = document.querySelectorAll(".noshorts-tab");
   for (const v of doms) {
@@ -45,14 +155,14 @@ function initTabEvent() {
   }
 }
 
-// Tab 点击事件处理函数
+// Tab click event handler
 function tabEventHandler(event) {
   const dom = event.target;
   if (dom.classList.contains("noshorts-active")) {
     return;
   }
-  const doms = document.querySelectorAll(".noshorts-tab");
-  for (const item of doms) {
+  const tabs = document.querySelectorAll(".noshorts-tab");
+  for (const item of tabs) {
     if (item.classList.contains("noshorts-active")) {
       item.classList.replace("noshorts-active", "noshorts-noactive");
     }
@@ -60,9 +170,10 @@ function tabEventHandler(event) {
       item.classList.replace("noshorts-noactive", "noshorts-active");
     }
   }
+  reRender(dom);
 }
 
-// 显示 Tabs 栏
+// show Tabs
 function showTabs() {
   const headerDOM = document.querySelector(
     "ytd-page-manager>ytd-browse>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#header-container>#header"
