@@ -1,36 +1,58 @@
-const containerDOM = getDOMContainer();
+const pageManagerDOM = document.querySelector(
+  "body>ytd-app>#content>ytd-page-manager"
+);
 
-// init tabs
-showTabs();
-initTabEvent();
-
-// new observer
-let observer = new MutationObserver((mutations) => {
-  console.log("[noshorts] container changed");
-  const activedTab = getDOMActivedTab();
-  reRender(activedTab);
+// observer whether the header has been rendered
+let observerHeader = new MutationObserver((mutations) => {
+  const headerDOM = getDOMHeader();
+  if (headerDOM) {
+    observerHeader.disconnect();
+    run();
+  }
 });
-
-// listen container DOM change
-observer.observe(containerDOM, {
+observerHeader.observe(pageManagerDOM, {
   childList: true,
+  subtree: true,
 });
+
+// run
+function run() {
+  var containerDOM = getDOMContainer();
+
+  showTabs();
+  initTabEvent();
+
+  // new observer
+  let observer = new MutationObserver((mutations) => {
+    const activedTab = getDOMActivedTab();
+    reRender(activedTab);
+  });
+
+  // listen container DOM change
+  observer.observe(containerDOM, {
+    childList: true,
+  });
+}
 
 // get container of all content
 function getDOMContainer() {
-  return document.querySelector(
-    "ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents"
+  return pageManagerDOM.querySelector(
+    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents"
   );
 }
 
 // get video list of all
-function getDOMAllVideos(containerDOM) {
-  return containerDOM.querySelectorAll("ytd-grid-video-renderer");
+function getDOMAllVideos() {
+  return pageManagerDOM.querySelectorAll(
+    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents ytd-grid-video-renderer"
+  );
 }
 
 // get section list of container
-function getDOMSectionList(containerDOM) {
-  return containerDOM.querySelectorAll("ytd-item-section-renderer");
+function getDOMSectionList() {
+  return pageManagerDOM.querySelectorAll(
+    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents>ytd-item-section-renderer"
+  );
 }
 
 // get video list of section
@@ -46,6 +68,13 @@ function getDOMActivedTab() {
       return dom;
     }
   }
+}
+
+// get header
+function getDOMHeader() {
+  return pageManagerDOM.querySelector(
+    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer>#primary>ytd-section-list-renderer>#header-container>#header"
+  );
 }
 
 // show video
@@ -84,7 +113,7 @@ function isLive(videoDOM) {
 
 // show all videos
 function showAll() {
-  const allVideosDOM = getDOMAllVideos(containerDOM);
+  const allVideosDOM = getDOMAllVideos();
   for (const v of allVideosDOM) {
     showVideo(v);
   }
@@ -92,7 +121,7 @@ function showAll() {
 
 // show videos only
 function showVideosOnly() {
-  const allVideosDOM = getDOMAllVideos(containerDOM);
+  const allVideosDOM = getDOMAllVideos();
   for (const v of allVideosDOM) {
     if (isShort(v) || isLive(v)) {
       hiddenVideo(v);
@@ -104,7 +133,7 @@ function showVideosOnly() {
 
 // show shorts only
 function showShortsOnly() {
-  const allVideosDOM = getDOMAllVideos(containerDOM);
+  const allVideosDOM = getDOMAllVideos();
   for (const v of allVideosDOM) {
     if (isShort(v)) {
       showVideo(v);
@@ -116,7 +145,7 @@ function showShortsOnly() {
 
 // show lives only
 function showLivesOnly() {
-  const allVideosDOM = getDOMAllVideos(containerDOM);
+  const allVideosDOM = getDOMAllVideos();
   for (const v of allVideosDOM) {
     if (isLive(v)) {
       showVideo(v);
@@ -175,9 +204,7 @@ function tabEventHandler(event) {
 
 // show Tabs
 function showTabs() {
-  const headerDOM = document.querySelector(
-    "ytd-page-manager>ytd-browse>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#header-container>#header"
-  );
+  const headerDOM = getDOMHeader();
   headerDOM.innerHTML = `
       <style>
       #noshorts-tabs {
