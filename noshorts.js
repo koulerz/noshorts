@@ -17,8 +17,6 @@ observerHeader.observe(pageManagerDOM, {
 
 // run
 function run() {
-  var containerDOM = getDOMContainer();
-
   showTabs();
   initTabEvent();
 
@@ -29,6 +27,7 @@ function run() {
   });
 
   // listen container DOM change
+  var containerDOM = getDOMContainer();
   observer.observe(containerDOM, {
     childList: true,
   });
@@ -131,23 +130,11 @@ function showVideosOnly() {
   }
 }
 
-// show shorts only
-function showShortsOnly() {
+// show shorts and lives only
+function showShortsLivesOnly() {
   const allVideosDOM = getDOMAllVideos();
   for (const v of allVideosDOM) {
-    if (isShort(v)) {
-      showVideo(v);
-    } else {
-      hiddenVideo(v);
-    }
-  }
-}
-
-// show lives only
-function showLivesOnly() {
-  const allVideosDOM = getDOMAllVideos();
-  for (const v of allVideosDOM) {
-    if (isLive(v)) {
+    if (isShort(v) || isLive(v)) {
       showVideo(v);
     } else {
       hiddenVideo(v);
@@ -158,6 +145,7 @@ function showLivesOnly() {
 // rerender
 function reRender(activedTabDOM) {
   const text = activedTabDOM.innerHTML;
+  console.log(text);
   switch (text) {
     case "All":
       showAll();
@@ -165,11 +153,8 @@ function reRender(activedTabDOM) {
     case "Video":
       showVideosOnly();
       break;
-    case "Shorts":
-      showShortsOnly();
-      break;
-    case "Live":
-      showLivesOnly();
+    case "Shorts &amp; Live":
+      showShortsLivesOnly();
       break;
     default:
       showAll();
@@ -244,7 +229,6 @@ function showTabs() {
       <div id="noshorts-tabs">
         <a class="noshorts-tab noshorts-active">All</a>
         <a class="noshorts-tab noshorts-noactive">Video</a>
-        <a class="noshorts-tab noshorts-noactive">Shorts</a>
-        <a class="noshorts-tab noshorts-noactive">Live</a>
+        <a class="noshorts-tab noshorts-noactive">Shorts & Live</a>
       </div>`;
 }
