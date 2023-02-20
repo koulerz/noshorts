@@ -10,6 +10,7 @@ let observerHeader = new MutationObserver((mutations) => {
     run();
   }
 });
+
 observerHeader.observe(pageManagerDOM, {
   childList: true,
   subtree: true,
@@ -17,7 +18,7 @@ observerHeader.observe(pageManagerDOM, {
 
 // run
 function run() {
-  showTabs();
+  createTabs();
   initTabEvent();
 
   // new observer
@@ -45,18 +46,6 @@ function getDOMAllVideos() {
   return pageManagerDOM.querySelectorAll(
     "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents ytd-grid-video-renderer"
   );
-}
-
-// get section list of container
-function getDOMSectionList() {
-  return pageManagerDOM.querySelectorAll(
-    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents>ytd-item-section-renderer"
-  );
-}
-
-// get video list of section
-function getDOMVideoListOfSection(sectionDOM) {
-  return sectionDOM.querySelectorAll("ytd-grid-video-renderer");
 }
 
 // get actived tab
@@ -186,8 +175,8 @@ function tabEventHandler(event) {
   reRender(dom);
 }
 
-// show Tabs
-function showTabs() {
+// create Tabs
+function createTabs() {
   const headerDOM = getDOMHeader();
   headerDOM.innerHTML = `
       <style>
