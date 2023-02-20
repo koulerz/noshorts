@@ -145,7 +145,6 @@ function showShortsLivesOnly() {
 // rerender
 function reRender(activedTabDOM) {
   const text = activedTabDOM.innerHTML;
-  console.log(text);
   switch (text) {
     case "All":
       showAll();
