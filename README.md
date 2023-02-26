@@ -1,12 +1,12 @@
-# Noshorts
+# NoShorts
 
-[Noshorts](https://chrome.google.com/webstore/detail/noshorts/jfmjlacbhjnneepbohbiijicffbbebbk) is a chrome extension. It classify all videos on your youtube subscriptions page.
+[NoShorts](https://chrome.google.com/webstore/detail/noshorts/jfmjlacbhjnneepbohbiijicffbbebbk) is a Chrome extension. It categorizes your subscribed videos.
 
-You can use this extension to categorize subscribed videos on your youtube subscriptions page. Its UI is designed to be as close to the youtube website as possible.
+It adds tabs to the YouTube subscriptions page, putting different types of videos in their own tabs. This makes it easier to browse and view. Avoid too many shorts videos on the subscriptions page.
 
-This extension only works on your youtube subscription page. If you don't want to see shorts video recommendations on the YouTube homepage or the other pages, you can try to select the [Not interested] button on the shorts video. Youtube will reduce or no longer recommend shorts videos for you.
+[NoShorts](https://chrome.google.com/webstore/detail/noshorts/jfmjlacbhjnneepbohbiijicffbbebbk) only works on your youtube subscription page. If you don't want to see shorts video recommendations on the YouTube homepage or the other pages, you can try to select the [Not interested] button on the shorts video. Youtube will reduce or no longer recommend shorts videos for you.
 
 # Links
 
-- [Noshorts](https://chrome.google.com/webstore/detail/noshorts/jfmjlacbhjnneepbohbiijicffbbebbk)
+- [NoShorts](https://chrome.google.com/webstore/detail/noshorts/jfmjlacbhjnneepbohbiijicffbbebbk)
 - [Remove recommended content](https://support.google.com/youtube/answer/6125535)
