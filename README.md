@@ -8,5 +8,5 @@ NoShorts only works on your youtube subscription page. If you don't want to see 
 
 # Links
 
-- [NoShorts](https://chrome.google.com/webstore/detail/noshorts/jfmjlacbhjnneepbohbiijicffbbebbk)
+- [NoShorts](https://chrome.google.com/webstore/detail/noshorts/jimhmfkkehjpmaofepnkkbdianjilihf)
 - [Remove recommended content](https://support.google.com/youtube/answer/6125535)
