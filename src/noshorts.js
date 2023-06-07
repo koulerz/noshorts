@@ -37,14 +37,14 @@ function run() {
 // get container of all content
 function getDOMContainer() {
   return pageManagerDOM.querySelector(
-    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents"
+    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-rich-grid-renderer>#contents"
   );
 }
 
 // get video list of all
 function getDOMAllVideos() {
   return pageManagerDOM.querySelectorAll(
-    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-section-list-renderer>#contents ytd-grid-video-renderer"
+    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer ytd-rich-grid-renderer>#contents>ytd-rich-grid-row ytd-rich-item-renderer"
   );
 }
 
@@ -83,7 +83,7 @@ function hiddenVideo(videoDOM) {
 
 // report whether the video is shorts
 function isShort(videoDOM) {
-  const a = videoDOM.querySelector("a");
+  const a = videoDOM.querySelector("a#thumbnail");
   const href = a.href;
   return href.startsWith("https://www.youtube.com/shorts");
 }
@@ -91,7 +91,7 @@ function isShort(videoDOM) {
 // report whether the video is live
 function isLive(videoDOM) {
   const label = videoDOM.querySelector(
-    "#text-metadata>ytd-badge-supported-renderer>div.badge>span"
+    "#meta>ytd-badge-supported-renderer>div.badge>span"
   );
   if (label === null) {
     return false;
