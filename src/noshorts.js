@@ -61,7 +61,7 @@ function getDOMActivedTab() {
 // get header
 function getDOMHeader() {
   return pageManagerDOM.querySelector(
-    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer>#primary>ytd-section-list-renderer>#header-container>#header"
+    "ytd-browse[page-subtype='subscriptions']>ytd-two-column-browse-results-renderer>#primary>ytd-rich-grid-renderer>#header"
   );
 }
 
@@ -178,10 +178,12 @@ function tabEventHandler(event) {
 // create Tabs
 function createTabs() {
   const headerDOM = getDOMHeader();
+  headerDOM.removeAttribute("hidden");
   headerDOM.innerHTML = `
       <style>
       #noshorts-tabs {
         height: 56px;
+        margin: 0 24px;
       }
       .noshorts-tab {
         font-size: 14px;
