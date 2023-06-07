@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NoShorts",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "NoShorts categorizes your subscribed videos",
   "icons": {
     "16": "images/icon-16.png",
